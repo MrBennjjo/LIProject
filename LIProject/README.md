@@ -17,10 +17,11 @@ Lend Invest Programming Challenge.
 - Added LWC to Account record page, with condition to only show if account is GOLD.
 
 Code structured like 
-- TwilioMessageSender: this is the base class which handles the sending of messages from Twilio
-- TwilioMessageHelper: this is a helper class for sending messages, invokes TwilioMessageSender and others 
-- OpportunityTriggerHandler: handles the opportunity trigger
-- 
+- TwilioMessageSender: this is the base twilio class which directly handles the sending of messages from Twilio
+- TwilioMessageHelper: this is a helper class for sending messages, invokes TwilioMessageSender to send either a list of opportunity data to the CEO or a single message via the front end
+- OpportunityTriggerHandler: handles the opportunity trigger, contains logic on whether we want to send the messages or not
+
+- Each class has a test class and a small test data factory class has been written, also to allow for testing of the callouts an implementation of httpcalloutmock has been written
 
 ## General notes/observations
 - Perhaps for the custom SMS sender we need to consider making a record of each of the SMS messages sent to the Account in some sort of object? Would massively help with testing/error handling etc...
