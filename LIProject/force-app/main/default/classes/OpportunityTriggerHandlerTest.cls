@@ -13,16 +13,17 @@ public with sharing class OpportunityTriggerHandlerTest {
         Account bronzeAccount = [SELECT Id FROM Account WHERE Name = 'Bronze'];
         Opportunity newOpp = new Opportunity(Name = 'FAIL', Amount=12111, AccountId = bronzeAccount.Id, StageName='Needs Analysis', CloseDate = Date.today());
         Boolean exceptionOccured = false;
-        insert newOpp;
-        Test.startTest();         
+        insert newOpp;       
         try{
+            Test.setMock(HttpCalloutMock.class, new TwilioMessageSenderMock());
+            Test.startTest();  
             newOpp.StageName = 'Closed Won';
             newOpp.CloseDate = Date.today();
             update newOpp;
+            Test.stopTest();
         } catch(TwilioMessageSender.TwilioMessageSenderException e){
             exceptionOccured = true;
         }
-        Test.stopTest();
         System.assertEquals(false, exceptionOccured);
     }
 
@@ -32,16 +33,17 @@ public with sharing class OpportunityTriggerHandlerTest {
         Account bronzeAccount = [SELECT Id FROM Account WHERE Name = 'Bronze'];
         Opportunity newOpp = new Opportunity(Name = 'pass', Amount=12111, AccountId = bronzeAccount.Id, StageName='Needs Analysis', CloseDate = Date.today());
         Boolean exceptionOccured = false;
-        insert newOpp;
-        Test.startTest();         
+        insert newOpp;      
         try{
+            Test.setMock(HttpCalloutMock.class, new TwilioMessageSenderMock());
+            Test.startTest();   
             newOpp.StageName = 'Closed Won';
             newOpp.CloseDate = Date.today();
             update newOpp;
+            Test.stopTest();
         } catch(TwilioMessageSender.TwilioMessageSenderException e){
             exceptionOccured = true;
         }
-        Test.stopTest();
         System.assertEquals(false, exceptionOccured);
     }
 
@@ -51,15 +53,17 @@ public with sharing class OpportunityTriggerHandlerTest {
         Account goldAccount = [SELECT Id FROM Account WHERE Name = 'Golden'];
         Opportunity newOpp = new Opportunity(Name = 'FAIL', Amount=12111, AccountId = goldAccount.Id, StageName='Needs Analysis', CloseDate = Date.today());
         Boolean exceptionOccured = false;
-        insert newOpp;
-        Test.startTest();         
+        insert newOpp;  
         try{
+            Test.setMock(HttpCalloutMock.class, new TwilioMessageSenderMock());
+            Test.startTest();       
             newOpp.StageName = 'Closed Won';
             newOpp.CloseDate = Date.today();
+            update newOpp;
+            Test.stopTest();
         } catch(TwilioMessageSender.TwilioMessageSenderException e){
             exceptionOccured = true;
         }
-        Test.stopTest();
         System.assertEquals(true, exceptionOccured);
     }
 
@@ -67,18 +71,19 @@ public with sharing class OpportunityTriggerHandlerTest {
     static void testGoodRequestGold(){
         // when we send a good request for a gold account we should receive no exception as the request was made successfully
         Account goldAccount = [SELECT Id FROM Account WHERE Name = 'Golden'];
-        Opportunity newOpp = new Opportunity(Name = 'FAIL', Amount=12111, AccountId = goldAccount.Id, StageName='Needs Analysis', CloseDate = Date.today());
+        Opportunity newOpp = new Opportunity(Name = 'GOOD', Amount=12111, AccountId = goldAccount.Id, StageName='Needs Analysis', CloseDate = Date.today());
         Boolean exceptionOccured = false;
-        insert newOpp;
-        Test.startTest();         
+        insert newOpp;      
         try{
+            Test.setMock(HttpCalloutMock.class, new TwilioMessageSenderMock());
+            Test.startTest();   
             newOpp.StageName = 'Closed Won';
             newOpp.CloseDate = Date.today();
             update newOpp;
+            Test.stopTest();
         } catch(TwilioMessageSender.TwilioMessageSenderException e){
             exceptionOccured = true;
         }
-        Test.stopTest();
         System.assertEquals(false, exceptionOccured);
     }
 }

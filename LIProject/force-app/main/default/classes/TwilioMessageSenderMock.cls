@@ -4,7 +4,8 @@ global class TwilioMessageSenderMock implements HttpCalloutMock {
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
         if (req.getBody().contains('FAIL')){
-            res.setBody('FAILURE');
+            // return request body in response body on failure to verify contents of what was sent
+            res.setBody('FAILURE to send: ' + req.getBody());
             res.setStatusCode(400);
         } else{
             res.setBody('SUCCESS');

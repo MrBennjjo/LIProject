@@ -1,0 +1,10 @@
+<template>
+    <lightning-spinner if:true={sending}></lightning-spinner>
+    <lightning-card title="Send Customer SMS" icon-name="standard:messaging_user" variant="narrow">
+        <lightning-textarea class="slds-p-horizontal_x-small" type="text" label="Message" value={messageBody}
+            onfocus={handleInputFocus} onblur={handleInputBlur} onchange={handleInputChange} minlength="0" disabled={sending}></lightning-textarea>
+        <div slot="footer">
+            <lightning-button disabled={sending} label="Send" onclick={handleSendSMS}></lightning-button>
+        </div>
+    </lightning-card>
+</template>
