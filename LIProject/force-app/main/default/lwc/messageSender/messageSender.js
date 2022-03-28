@@ -5,15 +5,15 @@ import sendMessage from '@salesforce/apex/TwilioMessageHelper.sendAccountMessage
 export default class MessageSender extends LightningElement {
     @api recordId;
     messageBody = '';
+    // whether or not we're in the process of sending a message (controls input enablement and spinner)
     sending = false;
-    @track error;
-    @track success;
 
     handleSendSMS(event){
-        // only send message if it's > 0 
+        // only send message if the body is > 0 in length 
         if(this.messageBody.length > 0){
             this.sending = true;
             sendMessage({accId: this.recordId, messageBody: this.messageBody})
+                // if we successfully sent the message, display a positive toast message
                 .then(result => {
                     this.sending = false;
                     this.messageBody = '';
@@ -24,6 +24,7 @@ export default class MessageSender extends LightningElement {
                     });
                     this.dispatchEvent(evt);
                 })
+            // if there was an error whilst sending the message, display an error toast and the error on screen
                 .catch(error => {
                     this.sending = false;
                     const evt = new ShowToastEvent({
@@ -37,6 +38,7 @@ export default class MessageSender extends LightningElement {
     }
 
     handleInputChange(event) {
+        // binds the messageBody to the value of the textarea
         this.messageBody = event.detail.value;
     }
 
